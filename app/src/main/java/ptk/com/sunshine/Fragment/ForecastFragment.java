@@ -10,6 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,7 +30,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ptk.com.sunshine.BuildConfig;
 import ptk.com.sunshine.R;
+
+import static android.R.attr.apiKey;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -38,6 +44,29 @@ public class ForecastFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_NETWORK_STATE = 6;
 
     public ForecastFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.forecastfragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            FetchWeatherTask weatherTask = new FetchWeatherTask();
+            weatherTask.execute();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 
     @Override
@@ -82,6 +111,7 @@ public class ForecastFragment extends Fragment {
 
     public class FetchWeatherTask extends AsyncTask<Void, Void, Void>{
 
+        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
         @Override
         protected Void doInBackground(Void... params) {
 
@@ -101,8 +131,9 @@ public class ForecastFragment extends Fragment {
                     // Construct the URL for the OpenWeatherMap query
                     // Possible parameters are avaiable at OWM's forecast API page, at
                     // http://openweathermap.org/API#forecast
-                    URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=Jakarta,id&appid=a6c98baae0e401752c6604c9e6cd1f5e");
-
+                    String baseUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7";
+                    String apiKey = "&APPID=" + BuildConfig.OPEN_WEATHER_MAP_API_KEY;
+                    URL url = new URL(baseUrl.concat(apiKey));
                     // Create the request to OpenWeatherMap, and open the connection
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");

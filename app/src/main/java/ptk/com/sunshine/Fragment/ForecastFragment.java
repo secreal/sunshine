@@ -74,12 +74,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            arrayku.notifyDataSetChanged();
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String location = prefs.getString(getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default));
-            weatherTask.execute(location);
+            updateCuaca();
             return true;
         }
         if (id == R.id.action_settings) {
@@ -88,6 +83,21 @@ public class ForecastFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    private void updateCuaca() {
+        arrayku.notifyDataSetChanged();
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        weatherTask.execute(location);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateCuaca();
     }
 
     @Override
@@ -111,18 +121,7 @@ public class ForecastFragment extends Fragment {
             }
         }
 
-        String[] forecastArray = {
-                "Hari ini - Cerah - 30/32",
-                "Besok - Berawan - 28/30",
-                "Minggu depan - Cerah - 30/32",
-                "Bulan Depan - Cerah - 30/32",
-                "Tahun Depan- Cerah - 30/32",
-                "10 Tahun lagi- Cerah - 30/32"
-        };
-
-        List<String> weekForecast = new ArrayList<String>(
-                Arrays.asList(forecastArray));
-        arrayku = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForecast);
+        arrayku = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
         ListView lv = (ListView) rootView.findViewById(R.id.lv);
         lv.setDivider(null);
         lv.setAdapter(arrayku);

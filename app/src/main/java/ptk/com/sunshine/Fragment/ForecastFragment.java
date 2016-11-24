@@ -2,6 +2,7 @@ package ptk.com.sunshine.Fragment;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -38,9 +39,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import ptk.com.sunshine.BuildConfig;
+import ptk.com.sunshine.DetailActivity;
 import ptk.com.sunshine.R;
-
-import static android.media.CamcorderProfile.get;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -118,7 +118,9 @@ public class ForecastFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ForecastFragment.this.getActivity(), arrayku.getItem(position).toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, arrayku.getItem(position).toString());
+                startActivity(intent);
             }
         });
         return rootView;

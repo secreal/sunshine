@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ import java.util.List;
 
 import ptk.com.sunshine.BuildConfig;
 import ptk.com.sunshine.R;
+
+import static android.media.CamcorderProfile.get;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -112,6 +115,12 @@ public class ForecastFragment extends Fragment {
         ListView lv = (ListView) rootView.findViewById(R.id.lv);
         lv.setDivider(null);
         lv.setAdapter(arrayku);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(ForecastFragment.this.getActivity(), arrayku.getItem(position).toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
         return rootView;
     }
 

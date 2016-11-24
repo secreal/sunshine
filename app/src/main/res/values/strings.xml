@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">prediksi cuaca</string>
+    <string name="app_name">tebak cuaca</string>
     <!-- Label for the location preference [CHAR LIMIT=30] -->
     <string name="pref_location_label">Location</string>
 

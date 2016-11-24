@@ -3,11 +3,13 @@ package ptk.com.sunshine.Fragment;
 import android.Manifest;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.format.Time;
@@ -74,8 +76,10 @@ public class ForecastFragment extends Fragment {
         if (id == R.id.action_refresh) {
             arrayku.notifyDataSetChanged();
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("94043");
-            Toast.makeText(ForecastFragment.this.getActivity(), "tes", Toast.LENGTH_SHORT).show();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String location = prefs.getString(getString(R.string.pref_location_key),
+                    getString(R.string.pref_location_default));
+            weatherTask.execute(location);
             return true;
         }
         if (id == R.id.action_settings) {

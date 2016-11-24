@@ -41,6 +41,9 @@ import java.util.List;
 import ptk.com.sunshine.BuildConfig;
 import ptk.com.sunshine.DetailActivity;
 import ptk.com.sunshine.R;
+import ptk.com.sunshine.SettingsActivity;
+
+import static ptk.com.sunshine.R.id.container;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -73,6 +76,10 @@ public class ForecastFragment extends Fragment {
             FetchWeatherTask weatherTask = new FetchWeatherTask();
             weatherTask.execute("94043");
             Toast.makeText(ForecastFragment.this.getActivity(), "tes", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (id == R.id.action_settings) {
+           startActivity(new Intent(ForecastFragment.this.getActivity(), SettingsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
